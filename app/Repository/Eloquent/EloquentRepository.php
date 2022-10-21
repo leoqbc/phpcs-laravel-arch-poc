@@ -66,8 +66,8 @@ class EloquentRepository implements RepositoryInterface
             'lower'           => [ 'where', [ $field, '<', $value ] ],
             'lowerEqual'      => [ 'where', [ $field, '<=', $value ] ],
             'orderBy'         => [ 'orderBy', [ $field, $value === '' ? 'ASC' : 'DESC' ] ],
-            'limit'           => [ 'take', [ $field, $value ] ],
-            'offset'          => [ 'skip', [ $field, $value ] ],
+            'limit'           => [ 'take', [ $value ] ],
+            'offset'          => [ 'skip', [ $value ] ],
         };
     }
 }
