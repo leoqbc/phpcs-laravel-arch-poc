@@ -3,11 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Models\Bidding;
+use App\Repository\Eloquent\EloquentRepository;
+use App\UseCase\BiddingsUseCase;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class BiddingsController extends Controller
 {
+    public function __construct(
+        protected BiddingsUseCase $useCase,
+    ) {
+        # code...
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -26,10 +34,19 @@ class BiddingsController extends Controller
      */
     public function store(Request $request)
     {
-        $bidding = new Bidding($request->all());
+        $requestData = (object)$request->all();
 
-        if ($bidding->save()) {
-            return $bidding;
+        try {
+            $userBid = $this->useCase->BidMotorcycle(
+                $requestData->user_id, 
+                $requestData->motorcycle_id, 
+                $requestData->bid_value
+            );
+            return $userBid;
+        } catch (\Exception $ex) {
+            return [
+                'error' => $ex->getMessage(),
+            ];
         }
     }
 

@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Repository\Eloquent\EloquentRepository;
+use App\UseCase\BiddingsUseCase;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -13,7 +15,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->singleton(BiddingsUseCase::class, function ($app) {
+            return new BiddingsUseCase($app->make(EloquentRepository::class));
+        });
     }
 
     /**
@@ -23,6 +27,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        // ...
     }
 }
