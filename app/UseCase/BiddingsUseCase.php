@@ -13,6 +13,7 @@ class BiddingsUseCase
     ) {
         # code...
     }
+    
     /**
      * UseCase Client can Bid Item
      */
