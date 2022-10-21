@@ -26,7 +26,11 @@ class BiddingsController extends Controller
      */
     public function store(Request $request)
     {
-        
+        $bidding = new Bidding($request->all());
+
+        if ($bidding->save()) {
+            return $bidding;
+        }
     }
 
     /**
