@@ -14,9 +14,9 @@ class EloquentRepository implements RepositoryInterface
         $this->model = new $name();
     }
 
-    public function save(object $entity)
+    public function save(object $entity): bool
     {
-        $this->model->save((array)$entity);
+        return $this->model->save((array)$entity);
     }
 
     public function all(): array
