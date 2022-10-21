@@ -8,29 +8,36 @@ use App\Repository\RepositoryInterface;
 
 class BiddingsUseCase
 {
+    public function __construct(
+        protected RepositoryInterface $repository
+    ) {
+        # code...
+    }
     /**
      * UseCase Client can Bid Item
      */
-    public function BidMotorcycle(int $userId, int $motorcycleId, float $userBidValue)
+    public function BidMotorcycle(int $userId, int $motorcycleId, float $userBidValue): object
     {
         // deveria ser trocado pelo useCase de Get User
-        $user = \App\Models\User::find($userId);
+        $this->repository->setCollection(\App\Models\User::class);
+        $user = $this->repository->getById($userId);
 
         // deveria ser trocado pelo useCase de Get Motorcycle
-        $motorcycle = \App\Models\Motorcycle::find($motorcycleId);
+        $this->repository->setCollection(\App\Models\Motorcycle::class);
+        $motorcycle = $this->repository->getById($motorcycleId);
 
         $bid = new Bid($userBidValue, $motorcycle->price, Enum::from($motorcycle->status), 0);
         $bid->isValid();
 
         // Pode virar um DTO
-        $userBid = [
+        $userBid = (object)[
             'user_id' => $user->id,
             'motorcycle_id' => $motorcycle->id,
             'bid_value' => $userBidValue,
         ];
 
-        $biding = new \App\Models\Bidding();
-        $biding->save($userBid);
+        $this->repository->setCollection(\App\Models\Bidding::class);
+        $this->repository->save($userBid);
 
         return $userBid;
     }
