@@ -36,8 +36,17 @@ class Bid
         return false;
     }
 
+    public function isClosedMotorcycleStatus()
+    {
+        return $this->motorcycleStatus === Motorcycle::CLOSED;
+    }
+
     public function isValid(): bool
     {
+        if ($this->isClosedMotorcycleStatus()) {
+            throw new \Exception('Cannot bid to a closed status');
+        }
+
         if ($this->isInvalidInitialBid()) {
             throw new \Exception('Price need to be greater than the motorcycle');
         }

@@ -55,4 +55,18 @@ class BiddingTest extends TestCase
         $this->assertTrue($bid->isValid());
     }
 
+    public function testBidShouldNotBeCreatedOnClosedStatus()
+    {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Cannot bid to a closed status');
+
+        $bid = new Bid(
+            userPrice: 303_000,
+            motorcyclePrice: 300_000,
+            motorcycleStatus: Motorcycle::CLOSED,
+            lastBidPrice: 302_000,
+        );
+        
+        $bid->isValid();
+    }
 }
